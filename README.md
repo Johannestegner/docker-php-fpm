@@ -1,2 +1,3 @@
-# docker-php-fpm
-Docker image for php-fpm including a few extensions.
+# Php fpm
+
+Docker alpine php with a few extra extensions.
