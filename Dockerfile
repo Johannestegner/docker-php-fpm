@@ -8,6 +8,7 @@ RUN apk upgrade --update \
     && apk add $PACKAGES \
     && pecl install redis-3.1.2 \
     && docker-php-ext-enable redis \ 
-    && docker-php-ext-install $INSTALL_EXTENSIONS
+    && docker-php-ext-install $INSTALL_EXTENSIONS \
+    && rm -rf /var/cache/apk/*
 
 WORKDIR /app
