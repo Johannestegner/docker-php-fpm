@@ -1,4 +1,4 @@
-FROM php:fpm
+FROM php:fpm-alpine
 MAINTAINER Johannes Tegnér <johannes@jitesoft.com>
 
 ENV PACKAGES="autoconf binutils gcc make isl libatomic musl-dev re2c libstdc++ libgcc binutils-libs mpc1 mpfr3 gmp libgomp coreutils redis freetype-dev libjpeg-turbo-dev libltdl libmcrypt-dev libpng-dev" \
