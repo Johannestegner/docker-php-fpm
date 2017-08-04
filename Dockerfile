@@ -8,6 +8,5 @@ RUN apk add --no-cache $PACKAGES \
     && pecl install redis-3.1.2 \
     && docker-php-ext-enable redis \ 
     && docker-php-ext-install $INSTALL_EXTENSIONS \
-    && rm -rf /var/cache/apk/*
 
 WORKDIR /app
