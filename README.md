@@ -1,13 +1,10 @@
-# Php fpm
+# Alpine - Php FPM
 
 Docker alpine php with a few extra extensions.
 
-## Versions
+## Tags
 
-This repository contains the following images/branches:
-
-
-* [`7.2`, `7`, `latest`](https://github.com/Johannestegner/docker-php-fpm/tree/7.2) (unstable, rc)
-* [`7.1`](https://github.com/Johannestegner/docker-php-fpm/tree/7.1) (stable)
-* [`7.0`](https://github.com/Johannestegner/docker-php-fpm/tree/7.0)
-* [`5.6`](https://github.com/Johannestegner/docker-php-fpm/tree/5.6)
+* `7.2`, `7`, `latest` [7.2/Dockerfile](https://github.com/Johannestegner/docker-php-fpm/blob/master/7.2/Dockerfile)
+* `7.1` [7.1/Dockerfile](https://github.com/Johannestegner/docker-php-fpm/blob/master/7.1/Dockerfile)
+* `7.0` [`7.0/Dockerfile`](https://github.com/Johannestegner/docker-php-fpm/blob/master/7.0/Dockerfile)
+* `5.6` [`5.6/Dockerfile`](https://github.com/Johannestegner/docker-php-fpm/blob/master/5.6/Dockerfile)
