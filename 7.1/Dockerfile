@@ -5,7 +5,7 @@ ENV PACKAGES="autoconf binutils gcc make isl libatomic musl-dev re2c libstdc++ l
     INSTALL_EXTENSIONS="iconv mcrypt mysqli pdo pdo_mysql zip gd"
 
 RUN apk add --no-cache $PACKAGES \
-    && pecl install redis-3.1.3 \
+    && pecl install redis-3.1.4 \
     && docker-php-ext-enable redis \ 
     && docker-php-ext-install $INSTALL_EXTENSIONS \
     && php -v
