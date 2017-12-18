@@ -1,7 +1,8 @@
 FROM php:7.0-fpm-alpine
 LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>"
 
-ENV PACKAGES="autoconf binutils gcc make isl libatomic musl-dev re2c libstdc++ libgcc binutils-libs mpc1 mpfr3 gmp libgomp coreutils redis freetype-dev libjpeg-turbo-dev libltdl libmcrypt-dev libpng-dev" \
+ENV PHP_VERSION="7.0" \
+    PACKAGES="autoconf binutils gcc make isl libatomic musl-dev re2c libstdc++ libgcc binutils-libs mpc1 mpfr3 gmp libgomp coreutils redis freetype-dev libjpeg-turbo-dev libltdl libmcrypt-dev libpng-dev" \
     INSTALL_EXTENSIONS="iconv mcrypt mysqli pdo pdo_mysql zip gd"
 
 RUN apk add --no-cache $PACKAGES \
