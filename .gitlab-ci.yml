@@ -6,7 +6,10 @@ variables:
 php 7.2:
   stage: deploy
   variables:
-    DOCKER_FILE: "7.2/Dockerfile"
+    VERSION: "7.2"
+    DOCKER_FILE: "${VERSION}/Dockerfile"
+  before_script:
+    - pull php/${VERSION}-fpm-alpine
   script:
     - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
@@ -15,13 +18,18 @@ php 7.2:
     - TAGS="${PHP_V} 7 stable latest"
     - for tag in $TAGS; do docker tag $BUILD ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
     - docker logout
+  after_script:
+    - docker run --rm jitesoft/php-fpm:${PHP_V} php -v
   only:
     - master
 
 php 7.1:
   stage: deploy
   variables:
-    DOCKER_FILE: "7.1/Dockerfile"
+    VERSION: "7.1"
+    DOCKER_FILE: "${VERSION}/Dockerfile"
+  before_script:
+    - pull php/${VERSION}-fpm-alpine
   script:
     - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
@@ -30,13 +38,18 @@ php 7.1:
     - TAGS="${PHP_V}"
     - for tag in $TAGS; do docker tag $BUILD ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
     - docker logout
+  after_script:
+    - docker run --rm jitesoft/php-fpm:${PHP_V} php -v
   only:
     - master
 
 php 7.0:
   stage: deploy
   variables:
-    DOCKER_FILE: "7.0/Dockerfile"
+    VERSION: "7.0"
+    DOCKER_FILE: "${VERSION}/Dockerfile"
+  before_script:
+    - pull php/${VERSION}-fpm-alpine
   script:
     - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
@@ -45,13 +58,18 @@ php 7.0:
     - TAGS="${PHP_V}"
     - for tag in $TAGS; do docker tag $BUILD ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
     - docker logout
+  after_script:
+    - docker run --rm jitesoft/php-fpm:${PHP_V} php -v
   only:
     - master
 
 php 5.6:
   stage: deploy
   variables:
-    DOCKER_FILE: "5.6/Dockerfile"
+    VERSION: "5.6"
+    DOCKER_FILE: "${VERSION}/Dockerfile"
+  before_script:
+    - pull php/${VERSION}-fpm-alpine
   script:
     - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
@@ -60,5 +78,7 @@ php 5.6:
     - TAGS="${PHP_V} 5"
     - for tag in $TAGS; do docker tag $BUILD ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
     - docker logout
+  after_script:
+    - docker run --rm jitesoft/php-fpm:${PHP_V} php -v
   only:
     - master
