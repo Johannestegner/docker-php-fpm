@@ -3,23 +3,25 @@ image: docker:latest
 variables:
   IMG_NAME: "jitesoft/php-fpm"
 
+before_script:
+  - docker login -u $HUB_USER -p $HUB_PW
+
+after_script:
+  - docker run --rm ${IMG_NAME}:${VERSION} php -v
+  - docker logout
+
 php 7.2:
   stage: deploy
   variables:
     VERSION: "7.2"
     DOCKER_FILE: "${VERSION}/Dockerfile"
-  before_script:
-    - docker login -u $HUB_USER -p $HUB_PW
-    - docker pull php:${VERSION}-fpm-alpine3.7
   script:
-    - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
+    - docker pull php:${VERSION}-fpm-alpine3.7
+    - BUILD=$(docker build --no-cache -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
     - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
     - TAGS="${PHP_V} 7 stable latest"
     - for tag in $TAGS; do docker tag $BUILD ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
-    - docker run --rm jitesoft/php-fpm:${VERSION} php -v
-  after_script:
-    - docker logout
   only:
     - master
 
@@ -28,18 +30,14 @@ php 7.1:
   variables:
     VERSION: "7.1"
     DOCKER_FILE: "${VERSION}/Dockerfile"
-  before_script:
-    - docker login -u $HUB_USER -p $HUB_PW
-    - docker pull php:${VERSION}-fpm-alpine3.4
   script:
-    - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
+    - docker pull php:${VERSION}-fpm-alpine3.4
+    - BUILD=$(docker build --no-cache -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
     - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
     - TAGS="${PHP_V}"
     - for tag in $TAGS; do docker tag $BUILD ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
     - docker run --rm jitesoft/php-fpm:${VERSION} php -v
-  after_script:
-    - docker logout
   only:
     - master
 
@@ -48,18 +46,14 @@ php 7.0:
   variables:
     VERSION: "7.0"
     DOCKER_FILE: "${VERSION}/Dockerfile"
-  before_script:
-    - docker login -u $HUB_USER -p $HUB_PW
-    - docker pull php:${VERSION}-fpm-alpine3.4
   script:
-    - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
+    - docker pull php:${VERSION}-fpm-alpine3.4
+    - BUILD=$(docker build --no-cache -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
     - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
     - TAGS="${PHP_V}"
     - for tag in $TAGS; do docker tag $BUILD ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
     - docker run --rm jitesoft/php-fpm:${VERSION} php -v
-  after_script:
-    - docker logout  
   only:
     - master
 
@@ -68,17 +62,12 @@ php 5.6:
   variables:
     VERSION: "5.6"
     DOCKER_FILE: "${VERSION}/Dockerfile"
-  before_script:
-    - docker login -u $HUB_USER -p $HUB_PW
-    - docker pull php:${VERSION}-fpm-alpine3.4
   script:
-    - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
+    - docker pull php:${VERSION}-fpm-alpine3.4
+    - BUILD=$(docker build --no-cache -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
     - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
     - TAGS="${PHP_V} 5"
     - for tag in $TAGS; do docker tag $BUILD ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
-    - docker run --rm jitesoft/php-fpm:${VERSION} php -v
-  after_script:
-    - docker logout
   only:
     - master
