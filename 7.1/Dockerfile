@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-alpine3.7
+FROM php:7.1-fpm-alpine3.4
 LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>"
 
 ENV PHP_VERSION="7.1" \

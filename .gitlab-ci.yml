@@ -10,7 +10,7 @@ php 7.2:
     DOCKER_FILE: "${VERSION}/Dockerfile"
   before_script:
     - docker login -u $HUB_USER -p $HUB_PW
-    - docker pull php:${VERSION}-fpm-alpine
+    - docker pull php:${VERSION}-fpm-alpine3.7
   script:
     - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
@@ -30,7 +30,7 @@ php 7.1:
     DOCKER_FILE: "${VERSION}/Dockerfile"
   before_script:
     - docker login -u $HUB_USER -p $HUB_PW
-    - docker pull php:${VERSION}-fpm-alpine
+    - docker pull php:${VERSION}-fpm-alpine3.4
   script:
     - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
@@ -50,7 +50,7 @@ php 7.0:
     DOCKER_FILE: "${VERSION}/Dockerfile"
   before_script:
     - docker login -u $HUB_USER -p $HUB_PW
-    - docker pull php:${VERSION}-fpm-alpine
+    - docker pull php:${VERSION}-fpm-alpine3.4
   script:
     - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
@@ -70,7 +70,7 @@ php 5.6:
     DOCKER_FILE: "${VERSION}/Dockerfile"
   before_script:
     - docker login -u $HUB_USER -p $HUB_PW
-    - docker pull php:${VERSION}-fpm-alpine
+    - docker pull php:${VERSION}-fpm-alpine3.4
   script:
     - BUILD=$(docker build -q -f ${DOCKER_FILE} .)
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
