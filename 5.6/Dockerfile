@@ -1,4 +1,4 @@
-FROM php:5.6-fpm-alpine
+FROM php:5.6-fpm-alpine3.4
 LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>"
 
 ENV PHP_VERSION="5.6" \
