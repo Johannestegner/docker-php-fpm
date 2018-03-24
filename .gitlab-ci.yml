@@ -4,7 +4,6 @@ variables:
   VERSION: "7.2"
   PHP_V: "error"
   IMG_NAME: "jitesoft/php-fpm"
-  TAGS: "${PHP_V}"
   DOCKER_FILE: "${VERSION}/Dockerfile"
 
 before_script:
@@ -12,8 +11,7 @@ before_script:
   - docker pull php:${VERSION}-fpm-alpine
 
 after_script:
-  - for tag in $TAGS; do docker tag $BUILD ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
-  - docker run --rm ${IMG_NAME}:${VERSION} php -v
+    - docker run --rm ${IMG_NAME}:${VERSION} php -v
 
 php 7.2:
   stage: deploy
@@ -22,6 +20,7 @@ php 7.2:
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
     - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
     - TAGS="${PHP_V} 7 stable latest"
+    - for tag in ${TAGS}; do docker tag ${BUILD} ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
   only:
     - master
 
@@ -34,6 +33,7 @@ php 7.1:
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
     - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
     - TAGS="${PHP_V}"
+    - for tag in ${TAGS}; do docker tag ${BUILD} ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
   only:
     - master
 
@@ -46,6 +46,7 @@ php 7.0:
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
     - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
     - TAGS="${PHP_V}"
+    - for tag in ${TAGS}; do docker tag ${BUILD} ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
   only:
     - master
 
@@ -58,5 +59,6 @@ php 5.6:
     - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
     - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
     - TAGS="${PHP_V} 5"
+    - for tag in ${TAGS}; do docker tag ${BUILD} ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
   only:
     - master
