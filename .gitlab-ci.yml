@@ -1,64 +1,40 @@
-image: docker:latest
-
-variables:
-  VERSION: "7.2"
-  PHP_V: "error"
-  IMG_NAME: "jitesoft/php-fpm"
-  DOCKER_FILE: "${VERSION}/Dockerfile"
-
-before_script:
-  - docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
-  - docker pull php:${VERSION}-fpm-alpine
-
-after_script:
-    - docker run --rm ${IMG_NAME}:${VERSION} php -v
-
-php 7.2:
-  stage: deploy
-  script:
-    - BUILD=$(docker build --no-cache -q -f ${DOCKER_FILE} .)
-    - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
-    - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
-    - TAGS="${PHP_V} 7 stable latest"
-    - for tag in ${TAGS}; do docker tag ${BUILD} ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
-  only:
-    - master
-
-php 7.1:
+.build: &build
+  image: docker:latest
   stage: deploy
   variables:
-    VERSION: "7.1"
+    EXTRA_TAGS: ""
+  before_script:
+    - echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USER} --password-stdin
+    - docker pull php:${PHP_VERSION}-fpm-alpine
   script:
-    - BUILD=$(docker build --no-cache -q -f ${DOCKER_FILE} .)
-    - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
-    - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
-    - TAGS="${PHP_V}"
-    - for tag in ${TAGS}; do docker tag ${BUILD} ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
-  only:
-    - master
+    - BUILD=$(docker build --build-arg PHP_VERSION=${PHP_VERSION} --no-cache -q -f .)
+    - TAGS="${PHP_VERSION} ${EXTRA_TAGS}"
+    - for tag in ${TAGS; do docker tag {BUILD} jitesoft/php-fpm:${tag}; docker push jitesoft/php-fpm:${tag}; done
+  after_script:
+      - docker run --rm ${IMG_NAME}:${PHP_VERSION} php -v
 
-php 7.0:
-  stage: deploy
-  variables:
-    VERSION: "7.0"
-  script:
-    - BUILD=$(docker build --no-cache -q -f ${DOCKER_FILE} .)
-    - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
-    - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
-    - TAGS="${PHP_V}"
-    - for tag in ${TAGS}; do docker tag ${BUILD} ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
-  only:
-    - master
 
-php 5.6:
-  stage: deploy
+build:7.2:
+  <<: *build
   variables:
-    VERSION: "5.6"
-  script:
-    - BUILD=$(docker build --no-cache -q -f ${DOCKER_FILE} .)
-    - PHP_V=$(docker inspect -f '{{range $index, $value := .Config.Env}}{{if eq (index (split $value "=") 0) "PHP_VERSION" }}{{range $i, $part := (split $value "=")}}{{if gt $i 1}}{{print "="}}{{end}}{{if gt $i 0}}{{print $part}}{{end}}{{end}}{{end}}{{end}}' ${BUILD})
-    - echo "Building for php v ${PHP_V}. The image build hash is ${BUILD}"
-    - TAGS="${PHP_V} 5"
-    - for tag in ${TAGS}; do docker tag ${BUILD} ${IMG_NAME}:${tag}; docker push ${IMG_NAME}:${tag}; done
-  only:
-    - master
+    PHP_VERSION: "7.2"
+    EXTRA_TAGS: "latest stable 7"
+
+build:7.1:
+  <<: *build
+  variables:
+    PHP_VERSION: "7.1"
+
+build:7.0:
+  <<: *build
+  variables:
+    PHP_VERSION: "7.0"
+
+build:5.6:
+  <<: *build
+  variables:
+    EXTRA_TAGS: "5"
+  variables:
+    PHP_VERSION: "5.6"
+
+
