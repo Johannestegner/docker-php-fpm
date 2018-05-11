@@ -1,3 +1,7 @@
+stages:
+  - deploy
+  - notify
+
 .build: &build
   image: docker:latest
   stage: deploy
@@ -11,7 +15,7 @@
     - TAGS="${PHP_VERSION} ${EXTRA_TAGS}"
     - for tag in ${TAGS; do docker tag {BUILD} jitesoft/php-fpm:${tag}; docker push jitesoft/php-fpm:${tag}; done
   after_script:
-      - docker run --rm ${IMG_NAME}:${PHP_VERSION} php -v
+      - docker run --rm jitesoft/php-fpm:${PHP_VERSION} php -v
 
 
 build:7.2:
@@ -37,4 +41,7 @@ build:5.6:
   variables:
     PHP_VERSION: "5.6"
 
-
+trigger_build:
+  stage: notify
+  script:
+    - "curl -X POST -F token=${NOTIFY_TOKEN} -F ref=master https://gitlab.com/api/v4/projects/4048644/trigger/pipeline"
