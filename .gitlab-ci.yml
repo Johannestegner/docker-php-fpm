@@ -13,7 +13,7 @@ stages:
   script:
     - BUILD=$(docker build --build-arg PHP_VERSION="${PHP_VERSION}" --no-cache -q .)
     - TAGS="${PHP_VERSION} ${EXTRA_TAGS}"
-    - for tag in ${TAGS; do docker tag {BUILD} jitesoft/php-fpm:${tag}; docker push jitesoft/php-fpm:${tag}; done
+    - for tag in ${TAGS}; do docker tag {BUILD} jitesoft/php-fpm:${tag}; docker push jitesoft/php-fpm:${tag}; done
   after_script:
       - docker run --rm jitesoft/php-fpm:${PHP_VERSION} php -v
 
