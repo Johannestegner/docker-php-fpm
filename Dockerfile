@@ -12,5 +12,3 @@ RUN apk add --no-cache --virtual .build-deps gcc make coreutils libc-dev autocon
     && apk del .build-deps
 
 WORKDIR /app
-
-CMD ["php"]
