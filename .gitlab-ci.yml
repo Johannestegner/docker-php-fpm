@@ -17,6 +17,11 @@ stages:
   after_script:
       - docker run --rm jitesoft/php-fpm:${PHP_VERSION} php -v
 
+build:7.3:
+  <<: *build
+  vairables:
+    PHP_VERSION: "7.3-rc"
+    EXTRA_TAGS: "rc next"
 
 build:7.2:
   <<: *build
@@ -36,8 +41,6 @@ build:7.0:
 
 build:5.6:
   <<: *build
-  variables:
-    EXTRA_TAGS: "5"
   variables:
     PHP_VERSION: "5.6"
 

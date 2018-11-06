@@ -4,6 +4,7 @@ Docker alpine php with a few extra extensions enabeled.
 
 ## Tags
 
+* `7.3`, `7.3-rc`, `rc`, `next`, `unstable`
 * `7.2`, `7`, `stable` `latest`
 * `7.1`
 * `7.0`
