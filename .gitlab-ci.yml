@@ -19,7 +19,7 @@ stages:
 
 build:7.3:
   <<: *build
-  vairables:
+  variables:
     PHP_VERSION: "7.3-rc"
     EXTRA_TAGS: "rc next"
 

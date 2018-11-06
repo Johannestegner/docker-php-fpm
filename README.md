@@ -10,4 +10,8 @@ Docker alpine php with a few extra extensions enabeled.
 * `7.0`
 * `5.6`
 
-[Dockerfile](https://github.com/Johannestegner/docker-php-fpm/blob/master/Dockerfile)
+## Dockerfile
+
+[GitHub](https://github.com/Johannestegner/docker-php-fpm/blob/master/Dockerfile)
+
+[GitLab](https://gitlab.com/jitesoft/dockerfiles/php-fpm)
