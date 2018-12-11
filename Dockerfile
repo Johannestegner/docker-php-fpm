@@ -1,4 +1,4 @@
-ARG PHP_VERSION="7.2"
+ARG PHP_VERSION="7.3"
 FROM php:${PHP_VERSION}-fpm-alpine
 LABEL maintainer="Johannes Tegnér <johannes@jitesoft.com>"
 
