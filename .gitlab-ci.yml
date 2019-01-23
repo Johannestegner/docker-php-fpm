@@ -3,6 +3,8 @@ stages:
   - notify
 
 .build: &build
+  services:
+    - docker:dind
   image: docker:latest
   stage: deploy
   variables:
