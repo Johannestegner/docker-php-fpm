@@ -13,9 +13,9 @@ stages:
     - echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USER} --password-stdin
     - docker pull php:${PHP_VERSION}-fpm-alpine
   script:
-    - BUILD=$(docker build --build-arg PHP_VERSION="${PHP_VERSION}" --no-cache -q .)
+    - docker build --build-arg PHP_VERSION="${PHP_VERSION}" -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} --no-cache .
     - TAGS="${PHP_VERSION} ${EXTRA_TAGS}"
-    - for tag in ${TAGS}; do docker tag ${BUILD} jitesoft/php-fpm:${tag}; docker push jitesoft/php-fpm:${tag}; done
+    - for tag in ${TAGS}; do docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} jitesoft/php-fpm:${tag}; docker push jitesoft/php-fpm:${tag}; done
   after_script:
       - docker run --rm jitesoft/php-fpm:${PHP_VERSION} php -v
 
