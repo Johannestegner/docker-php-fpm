@@ -6,13 +6,8 @@ stages:
   - scan
 
 .build: &build
-  image: registry.gitlab.com/jitesoft/dockerfiles/docker:18.09.6
-  services:
-    - registry.gitlab.com/jitesoft/dockerfiles/docker/dind:18.09.6
+  image: registry.gitlab.com/jitesoft/dockerfiles/docker:latest
   stage: deploy
-  before_script:
-    - echo ${CI_JOB_TOKEN} | docker login -u gitlab-ci-token registry.gitlab.com --password-stdin
-    - echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USER} --password-stdin
   script:
     - docker build --build-arg PHP_VERSION="${PHP_VERSION}" -t ${CI_REGISTRY_IMAGE}:${PHP_VERSION}-tmp .
     - |

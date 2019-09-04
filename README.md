@@ -1,10 +1,8 @@
 # Alpine - Php FPM
 
-Docker alpine php with `iconv`, `mysqli` `pdo`, `pdo_mysql`, `zip`, `gd` and `redis` installed and enabled.  
+Docker alpine php-fpm with `iconv`, `mysqli` `pdo`, `pdo_mysql`, `zip`, `gd` and `redis` installed and enabled.  
 Image is based on the [`jitesoft/php`](https://gitlab.com/jitesoft/dockerfiles/php-fpm) image using PHP FPM and exposes port `9000` for FPM. If you require PHP (fpm or cli) and not the 
 extensions enabled in this image, use the base image instead.
-
-
 
 ## Tags
 
