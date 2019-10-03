@@ -5,24 +5,22 @@ stages:
   - deploy
   - scan
 
+variables:
+  PLATFORMS: "linux/amd64,linux/arm64"
+
 .build: &build
   image: registry.gitlab.com/jitesoft/dockerfiles/docker:latest
   stage: deploy
   script:
-    - docker build --build-arg PHP_VERSION="${PHP_VERSION}" -t ${CI_REGISTRY_IMAGE}:${PHP_VERSION}-tmp .
-    - |
-      for tag in ${TAGS}; do
-        docker tag ${CI_REGISTRY_IMAGE}:${PHP_VERSION}-tmp ${CI_REGISTRY_IMAGE}:${tag}
-        docker tag ${CI_REGISTRY_IMAGE}:${PHP_VERSION}-tmp jitesoft/php-fpm:${tag}
-        docker push jitesoft/php-fpm:${tag}
-        docker push ${CI_REGISTRY_IMAGE}:${tag}
-      done
+    - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/php-fpm" "${TAG}")
+    - docker buildx build --platform ${PLATFORMS} --progress plain --push ${TAG_LIST} --build-arg PHP_VERSION="${PHP_VERSION}" .
+  tags: [ jitesoft, buildx, arm64, amd64 ]
 
 build:7.3:
   <<: *build
   variables:
     PHP_VERSION: "7.3"
-    TAGS: "stable latest 7 7.3"
+    TAGS: "stable,latest,7,7.3"
 
 build:7.2:
   <<: *build
