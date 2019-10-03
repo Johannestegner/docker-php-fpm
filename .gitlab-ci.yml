@@ -9,7 +9,7 @@ variables:
   PLATFORMS: "linux/amd64,linux/arm64"
 
 .build: &build
-  image: registry.gitlab.com/jitesoft/dockerfiles/docker:latest
+  image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   stage: deploy
   script:
     - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/php-fpm" "${TAG}")
