@@ -12,7 +12,7 @@ RUN apk add --no-cache --virtual .build-deps gcc make coreutils libc-dev autocon
  && apk add --no-cache --virtual .deps libzip-dev libjpeg-turbo-dev libltdl libpng-dev freetype-dev \
  && pecl install redis \
  && php-ext enable redis \
- && php-ext install iconv mysqli pdo pdo_mysql zip gd \
+ && php-ext install pdo_mysql zip gd \
  && apk del .build-deps
 
 VOLUME /app
