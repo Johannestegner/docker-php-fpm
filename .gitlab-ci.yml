@@ -16,25 +16,25 @@ variables:
     - docker buildx build --platform ${PLATFORMS} --progress plain --push ${TAG_LIST} --build-arg PHP_VERSION="${PHP_VERSION}" .
   tags: [ jitesoft, buildx, arm64, amd64 ]
 
+build:7.4:
+  <<: *build
+  variables:
+    PHP_VERSION: "7.4"
+    TAGS: "stable,latest,7,7.4"
+
 build:7.3:
   <<: *build
   variables:
     PHP_VERSION: "7.3"
-    TAGS: "stable,latest,7,7.3"
-
-build:7.2:
-  <<: *build
-  variables:
-    PHP_VERSION: "7.2"
-    TAGS: "7.2"
+    TAGS: "7.3"
 
 
-scan:7.3:
+scan:7.4:
   extends: .container_scanning
   variables:
-    SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:7.2"
+    SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:7.4"
 
-scan:7.2:
+scan:7.3:
   extends: .container_scanning
   variables:
     SCANNING_IMAGE_NAME: "${CI_REGISTRY_IMAGE}:7.3"
