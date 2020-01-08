@@ -6,7 +6,7 @@ stages:
   - scan
 
 variables:
-  PLATFORMS: "linux/amd64,linux/arm64"
+  PLATFORMS: "linux/amd64"
 
 .build: &build
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
@@ -14,7 +14,7 @@ variables:
   script:
     - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/php-fpm" "${TAGS}")
     - docker buildx build --platform ${PLATFORMS} --progress plain --push ${TAG_LIST} --build-arg PHP_VERSION="${PHP_VERSION}" .
-  tags: [ jitesoft, buildx, arm64, amd64 ]
+  tags: [ jitesoft, buildx, protected ]
 
 build:7.4:
   <<: *build
