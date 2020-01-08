@@ -6,7 +6,7 @@ stages:
   - scan
 
 variables:
-  PLATFORMS: "linux/amd64"
+  PLATFORMS: "linux/amd64,linux/arm64"
 
 .build: &build
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
