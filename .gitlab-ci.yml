@@ -16,6 +16,12 @@ variables:
     - docker buildx build --platform ${PLATFORMS} --progress plain --push ${TAG_LIST} --build-arg PHP_VERSION="${PHP_VERSION}" .
   tags: [ jitesoft, buildx, protected ]
 
+build:8.0:
+  <<: *build
+  variables:
+    PHP_VERSION: "8.0"
+    TAGS: "unstable,rc,8,8.0"
+
 build:7.4:
   <<: *build
   variables:
