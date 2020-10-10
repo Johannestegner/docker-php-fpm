@@ -12,7 +12,7 @@ variables:
   image: registry.gitlab.com/jitesoft/dockerfiles/misc:latest
   stage: deploy
   script:
-    - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/php-fpm" "${TAGS}")
+    - TAG_LIST=$(helper "${CI_REGISTRY_IMAGE},jitesoft/php-fpm,ghcr.io/jitesoft/php-fpm" "${TAGS}")
     - docker buildx build --platform ${PLATFORMS} --progress plain --push ${TAG_LIST} --build-arg PHP_VERSION="${PHP_VERSION}" .
   tags: [ jitesoft, buildx, protected ]
 
