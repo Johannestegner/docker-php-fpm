@@ -20,13 +20,13 @@ build:8.0:
   <<: *build
   variables:
     PHP_VERSION: "8.0"
-    TAGS: "unstable,rc,8,8.0"
+    TAGS: "stable,latest,8,8.0"
 
 build:7.4:
   <<: *build
   variables:
     PHP_VERSION: "7.4"
-    TAGS: "stable,latest,7,7.4"
+    TAGS: "7,7.4"
 
 build:7.3:
   <<: *build
